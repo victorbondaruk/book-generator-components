@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+set -e # Exit on any error
+
+# Pre-commit hook for Book Generator
+echo "🔍 Running pre-commit checks..."
+
+echo "Running ESLint for linting..."
+npm run lint
+
+echo "Running ESLint for fixing issues..."
+npm run lint-fix
+
+echo "Running ESLint for lint-staged..."
+pnpm lint-staged
+
+# Check for TypeScript errors in staged files
+echo "📝 Checking TypeScript..."
+pnpm tsc --noEmit || {
+    echo "❌ TypeScript errors found. Please fix them before committing."
+    exit 1
+}
+
+echo "✅ Pre-commit checks passed!"

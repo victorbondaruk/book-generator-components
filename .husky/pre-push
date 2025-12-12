@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-push hook for Book Generator
+echo "🚀 Running pre-push checks..."
+
+# Run tests
+echo "🧪 Running tests..."
+pnpm test || {
+    echo "❌ Tests failed. Please fix them before pushing."
+    exit 1
+}
+
+# Build check
+echo "🔨 Checking build..."
+pnpm build || {
+    echo "❌ Build failed. Please fix build errors before pushing."
+    exit 1
+}
+
+echo "✅ Pre-push checks passed!"
